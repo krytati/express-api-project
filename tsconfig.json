@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "Node16",                                /* Specify what module code is generated. */
+    "moduleResolution": "node16",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+    "lib": ["es5","es2016", "esnext"],
+    "allowImportingTsExtensions": true,                 /* Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set. */
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+  },
+  "exclude": [
+    "node_modules",
+  ]
+}
