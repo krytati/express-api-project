@@ -5,12 +5,9 @@ import supertest from "supertest";
 import {paths} from "../lib/routes/paths.ts";
 import {StatusCodes} from "http-status-codes";
 import {prepareDb} from "../lib/utils/prepareDB.ts";
-import express from "express";
-import router from "../lib/routes/router.ts";
+import {app} from "../lib/app.ts";
 
 describe('users', () => {
-
-    const app = express().use('/', router).listen(3000);
 
     beforeAll(() => connectToDb());
 
