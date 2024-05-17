@@ -15,7 +15,26 @@ export const controller = {
             } else {
                 response.send( { user: JSON.stringify(user) });
             }
-        } catch(error) {
+        } catch (error) {
+            response.status(StatusCodes.BAD_REQUEST).send('BD error');
+        }
+    },
+    async createUser(request: Request, response: Response) {
+        const user = request.body?.user;
+        if (!user) {
+            response.status(StatusCodes.BAD_REQUEST).send({ message: 'Empty user' });
+            return;
+        }
+        try {
+            const existedUser = await UserModel.findOne({ userName: user.userName }).lean();
+            if (existedUser) {
+                response.status(StatusCodes.BAD_REQUEST).send(
+                    { message: 'A user with the same user name already exists' }
+                );
+            }
+            const newUser = await UserModel.create(user);
+            response.status(StatusCodes.CREATED).send( { user: newUser });
+        } catch (error) {
             response.status(StatusCodes.BAD_REQUEST).send({ message: 'BD error' });
         }
     },
