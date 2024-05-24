@@ -1,5 +1,5 @@
 import {cleanDbData, connectToDb, disconnectDb} from "../db/mongodb.memory.ts";
-import mongoose, {set} from "mongoose";
+import mongoose from "mongoose";
 import {UserModel} from "../lib/model/user.model.ts";
 import supertest from "supertest";
 import {paths} from "../lib/routes/paths.ts";
@@ -28,6 +28,12 @@ describe('users', () => {
                 firstName: 'expectedFirstName',
                 lastName: 'expectedLastName',
             };
+            const expectedResponseBody = {
+                _id: expectedId.toString(),
+                userName: 'expectedUserName',
+                firstName: 'expectedFirstName',
+                lastName: 'expectedLastName',
+            };
             await UserModel.create(expectedUser);
             const expectedRoute = paths.userById.replace(':id', expectedId.toString());
             const b64auth = Buffer.from(`user1:${appPassword}`).toString('base64');
@@ -35,7 +41,7 @@ describe('users', () => {
             const actualResponse = await supertest(app).get(expectedRoute).set('Authorization', `basic ${b64auth}`);
 
             expect(actualResponse.status).toBe(StatusCodes.OK);
-            expect(actualResponse.body.user).toEqual(JSON.stringify(expectedUser));
+            expect(actualResponse.body.user).toMatchObject(expectedResponseBody);
         });
         test('WHEN incorrect id was sent SHOULD return an error', async () => {
             const expectedId = new mongoose.Types.ObjectId();
@@ -50,7 +56,7 @@ describe('users', () => {
         });
     });
 
-    describe('get', () => {
+    describe('create', () => {
         test('WHEN new user data was sent SHOULD return user', async () => {
             const expectedUserData = {
                 userName: 'expectedUserName',
@@ -74,9 +80,9 @@ describe('users', () => {
             expect(actualResponse.body.user).toMatchObject(expectedUserData);
         });
         test('WHEN duplicated userName was sent SHOULD return an error', async () => {
-            const expectedError = 'A user with the same user name already exists';
+            const expectedError = 'A user with the same username already exists';
             const expectedUserData = {
-                userName: 'user4',
+                userName: 'expectedUser',
                 firstName: 'expectedFirstName',
                 lastName: 'expectedLastName',
             };
@@ -85,6 +91,11 @@ describe('users', () => {
             const requestBody = {
                 user: expectedUserData
             };
+            await UserModel.create({
+                userName: 'expectedUser',
+                firstName: 'fname',
+                lastName: 'lname',
+            });
 
             const actualResponse = await supertest(app)
                 .post(expectedRoute)

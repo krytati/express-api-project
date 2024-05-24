@@ -1,4 +1,4 @@
-import {Request,Response} from "express";
+import {Request, Response} from "express";
 import {UserModel} from "../model/user.model.ts";
 import {StatusCodes} from "http-status-codes";
 export const controller = {
@@ -13,10 +13,10 @@ export const controller = {
             if (!user) {
                 response.status(StatusCodes.NOT_FOUND).send({ message: 'User does not exist' });
             } else {
-                response.send( { user: JSON.stringify(user) });
+                response.send( { user: user });
             }
         } catch (error) {
-            response.status(StatusCodes.BAD_REQUEST).send('BD error');
+            response.status(StatusCodes.BAD_REQUEST).send({ message: 'BD error' });
         }
     },
     async createUser(request: Request, response: Response) {
@@ -26,10 +26,10 @@ export const controller = {
             return;
         }
         try {
-            const existedUser = await UserModel.findOne({ userName: user.userName }).lean();
+            const existedUser = await UserModel.exists({ userName: user.userName });
             if (existedUser) {
                 response.status(StatusCodes.BAD_REQUEST).send(
-                    { message: 'A user with the same user name already exists' }
+                    { message: 'A user with the same username already exists' }
                 );
             }
             const newUser = await UserModel.create(user);

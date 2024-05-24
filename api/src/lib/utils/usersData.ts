@@ -19,11 +19,11 @@ export const usersData: User[] = [
     {
         userName: 'user4',
         firstName: 'fname4',
-        lastName: 'lname5',
+        lastName: 'lname4',
     },
     {
-        userName: 'user6',
-        firstName: 'fname6',
-        lastName: 'lname6',
+        userName: 'user5',
+        firstName: 'fname5',
+        lastName: 'lname5',
     },
 ];

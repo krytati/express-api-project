@@ -4,7 +4,7 @@ import {UserModel} from "./model/user.model.ts";
 export const appPassword = 'reallyStrongPassword';
 const checkUser = async (name: string): Promise<boolean> => {
     try {
-        const user = await UserModel.findOne({ userName: name }).lean();
+        const user = await UserModel.exists({ userName: name });
         return !!user;
     } catch (error) {
         return false;
