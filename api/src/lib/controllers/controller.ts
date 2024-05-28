@@ -1,7 +1,30 @@
 import {Request, Response} from "express";
 import {UserModel} from "../model/user.model.ts";
 import {StatusCodes} from "http-status-codes";
+import {generateToken} from "../auth.ts";
 export const controller = {
+    async signIn(request: Request, response: Response) {
+        const userName = request.body.userName;
+        if (!userName) {
+            response.status(StatusCodes.BAD_REQUEST).send({ message: 'Username should be sent' });
+            return;
+        }
+        try {
+            const token = await generateToken( { userName: userName });
+            response.send( { user: userName, jwt: token });
+        } catch (err) {
+            response.status(StatusCodes.BAD_REQUEST).send({ message: getText(err) });
+        }
+    },
+    async list(request: Request, response: Response) {
+        try {
+            const users = await UserModel.find().lean();
+            users.sort((a, b) => a.userName.localeCompare(b.userName) )
+            response.send( { users: users });
+        } catch (error) {
+            response.status(StatusCodes.BAD_REQUEST).send({ message: `BD error: ${getText(error)}` });
+        }
+    },
     async getUserById(request: Request, response: Response) {
         const userId = request.params.id;
         if (!userId) {
@@ -16,7 +39,7 @@ export const controller = {
                 response.send( { user: user });
             }
         } catch (error) {
-            response.status(StatusCodes.BAD_REQUEST).send({ message: 'BD error' });
+            response.status(StatusCodes.BAD_REQUEST).send({ message: `BD error: ${getText(error)}` });
         }
     },
     async createUser(request: Request, response: Response) {
@@ -35,7 +58,9 @@ export const controller = {
             const newUser = await UserModel.create(user);
             response.status(StatusCodes.CREATED).send( { user: newUser });
         } catch (error) {
-            response.status(StatusCodes.BAD_REQUEST).send({ message: 'BD error' });
+            response.status(StatusCodes.BAD_REQUEST).send({ message: `BD error: ${getText(error)}` });
         }
     },
 }
+
+const getText = (err: any): string => err.message ?? '';
