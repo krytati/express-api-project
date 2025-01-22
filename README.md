@@ -1,6 +1,6 @@
 This is a simple TypeScript backend project. 
 
-It has MongoDB in Memory Server on side and a few endpoints for CRUD database operations.
+It has MongoDB in Memory Server and a few endpoints for CRUD database operations.
 It also has simple jwt authorisation and routing with Express framework.
 You can run the server locally (`npm run start`) and try test it with Postman or just run jest tests (`npm run test`).
 
@@ -8,7 +8,7 @@ You can run the server locally (`npm run start`) and try test it with Postman or
 - localhost:3001/signIn
 
         {
-            "userName": "user-from-db"
+          "userName": "user-from-db"
         }
   
       and set bearer token from response.

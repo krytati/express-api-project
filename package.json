@@ -5,8 +5,8 @@
   "main": "server.ts",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm api/src/lib/server.ts",
-    "test": "jest --runInBand --detectOpenHandles"
+    "start": "node --loader ts-node/esm src/lib/server.ts",
+    "test": "jest"
   },
   "engines" : {
     "node" : ">=20.13.0",
