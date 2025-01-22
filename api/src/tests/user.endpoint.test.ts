@@ -1,23 +1,16 @@
-import {cleanDbData, connectToDb, disconnectDb} from "../db/mongodb.memory.ts";
+import {connectToDb, disconnectDb} from "../db/mongodb.memory.ts";
 import mongoose from "mongoose";
 import supertest from "supertest";
 import {paths} from "../lib/routes/paths.ts";
 import {StatusCodes} from "http-status-codes";
-import {prepareDb} from "../lib/utils/prepareDB.ts";
 import {app} from "../lib/app.ts";
 import {createTestUser, createTestUserAndGenerateToken} from "./testUtils/createUser.ts";
 import {usersData} from "../lib/utils/usersData.ts";
 
 describe('users', () => {
 
-    beforeAll(() => connectToDb());
-
-    afterEach(() => {
-        cleanDbData();
-        prepareDb();
-    });
-
-    afterAll(() => disconnectDb());
+    beforeEach( () => connectToDb());
+    afterEach( () => disconnectDb());
 
     describe('sign in', () => {
         test('WHEN existed username was sent SHOULD return the token', async () => {

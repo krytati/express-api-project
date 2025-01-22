@@ -5,7 +5,12 @@
   "main": "server.ts",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm api/src/lib/server.ts"
+    "start": "node --loader ts-node/esm api/src/lib/server.ts",
+    "test": "jest --runInBand --detectOpenHandles"
+  },
+  "engines" : {
+    "node" : ">=20.13.0",
+    "npm": "10.5.2"
   },
   "author": "",
   "license": "ISC",

@@ -54,6 +54,7 @@ export const controller = {
                 response.status(StatusCodes.BAD_REQUEST).send(
                     { message: 'A user with the same username already exists' }
                 );
+                return;
             }
             const newUser = await UserModel.create(user);
             response.status(StatusCodes.CREATED).send( { user: newUser });
